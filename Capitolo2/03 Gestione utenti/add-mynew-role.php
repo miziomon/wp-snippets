@@ -1,8 +1,10 @@
 <?php
 
 /**
- * funzione per la creazione di un nuovo ruolo
- * 
+ * esempio 231
+ * Creazione di un nuovo ruolo
+ * https://codex.wordpress.org/Function_Reference/add_role
+  * 
  * questa andrebbe chiamata una sola volta durante l'attivazione di un plugin "register_activation_hook"
  * https://codex.wordpress.org/Function_Reference/register_activation_hook
  * 
@@ -17,19 +19,31 @@ function add_mynew_role() {
      * https://developer.wordpress.org/reference/classes/wp_roles/
      */
     
-    $wp_roles = add_role(
+    $role = add_role(
         'premium_user', 
         'Utente premium', 
-            array( 'read' => true )
+            array( 'read' => true ) 
         );
     
-    if (null == $wp_roles) {
+    if (null == $role) {
         // uso error_log per tracciare il comportamento in caso di ruolo già presente
         error_log(  'Creazione ruolo fallita. Ruolo già presente' );
+    } else {
+
+        
+        // Se il ruolo è stato creato correttamente aggiungo le specifiche 
+        $role->add_cap( 'skip_advertising' ); 
+        $role->add_cap( 'show_premium_content' ); 
+        
     }
-    
-    
+
     // restituisco l'oggetto nel caso sia necessario 
     return $wp_roles;
 }
 
+
+/*
+ * esempio di registrazione ruolo all'attavazione di un plugin
+ * 
+ * register_activation_hook( __FILE__, 'add_mynew_role' );
+ */
